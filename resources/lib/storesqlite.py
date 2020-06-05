@@ -162,7 +162,15 @@ class StoreSQLite(object):
         searchcond = '( ( title LIKE ? ) OR ( show LIKE ? ) OR ( description LIKE ? ) )' if extendedsearch is True else '( ( title LIKE ? ) OR ( show LIKE ? ) )'
         searchparm = (searchmask, searchmask, searchmask) if extendedsearch is True else (
             searchmask, searchmask, )
-        return self._search_condition(searchcond, searchparm, filmui, True, True, self.settings.maxresults)
+        return self._search_condition(
+            searchcond,
+            searchparm,
+            filmui,
+            True,
+            True,
+            self.settings.maxresults,
+            order='film.aired DESC'
+        )
 
     def get_recents(self, channelid, filmui):
         """
@@ -184,7 +192,7 @@ class StoreSQLite(object):
                 True,
                 False,
                 self.settings.maxresults,
-                order='film.aired'
+                order='film.aired DESC'
             )
         return self._search_condition(
             self.sql_cond_recent,
@@ -193,7 +201,7 @@ class StoreSQLite(object):
             True,
             False,
             self.settings.maxresults,
-            order='film.aired'
+            order='film.aired DESC'
         )
 
     def get_live_streams(self, filmui):
